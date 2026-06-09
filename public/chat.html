@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CA AI PY SOSA DHRUV — AI Chartered Accountant</title>
+  <meta name="description" content="CA AI PY SOSA DHRUV — AI CA for India. Income Tax, GST, Audit, Company Law."/>
+  <meta name="theme-color" content="#070809"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ── Splash ────────────────────────────────────────────── -->
+<div class="splash" id="splashScreen">
+  <div class="splash-box">
+    <div class="splash-icon">CA</div>
+    <div class="splash-name">CA AI PY SOSA DHRUV</div>
+    <div class="splash-sub font-gold">AI Chartered Accountant · India</div>
+    <div class="splash-bar"></div>
+    <div class="splash-msg" id="splashStatus">Connecting…</div>
+  </div>
+</div>
+
+<!-- ── Sidebar ───────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="sb-head">
+    <div class="sb-logo">CA</div>
+    <div>
+      <div class="sb-title">CA AI PY SOSA DHRUV</div>
+      <div class="sb-sub">AI Chartered Accountant</div>
+    </div>
+    <button class="ib mob" id="sidebarClose" style="display:none" aria-label="Close sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="sb-body">
+
+    <button class="new-chat-btn" id="newChatBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      New Consultation
+    </button>
+
+    <!-- AI Engine -->
+    <div class="s-label">AI Engine</div>
+    <div class="row-flex">
+      <select class="sel" id="modelSelect"><option value="">Loading…</option></select>
+      <button class="ib" id="refreshModels" title="Refresh models">
+        <svg id="refreshIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+      </button>
+    </div>
+    <div class="status-row">
+      <span class="dot" id="statusDot"></span>
+      <span class="s-txt" id="statusText">Checking…</span>
+    </div>
+
+    <!-- Client -->
+    <div class="s-label" style="margin-top:4px">Client Profile</div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <input class="s-inp" id="crmName" type="text" placeholder="Client Name"/>
+      <input class="s-inp" id="crmId"   type="text" placeholder="PAN / GSTIN"/>
+      <select class="sel" id="crmEntity" style="width:100%">
+        <option>Individual / HUF</option>
+        <option>Private Limited Company</option>
+        <option>LLP</option>
+        <option>Trust / Society</option>
+      </select>
+    </div>
+
+    <!-- Export -->
+    <div class="s-label" style="margin-top:4px">Export Report</div>
+    <input class="s-inp" id="clientNameInput" type="text" placeholder="Client name for report" style="margin-bottom:4px"/>
+    <div class="exp-row">
+      <button class="exp-btn exp-pdf" id="exportPdf" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        PDF
+      </button>
+      <button class="exp-btn exp-xls" id="exportExcel" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 9 2 4 2-4M9 15l2-4 2 4M3 9h18M3 15h18"/></svg>
+        Excel
+      </button>
+    </div>
+
+    <!-- Deadlines -->
+    <div class="s-label" style="margin-top:4px">Upcoming Deadlines</div>
+    <div class="dl-list" id="deadlineTicker"></div>
+
+    <!-- Quick Ask -->
+    <div class="s-label" style="margin-top:4px">Quick Questions</div>
+    <div class="s-chips">
+      <button class="s-chip" data-q="Calculate income tax for salary ₹12 lakhs FY 2024-25. Show old vs new regime comparison with detailed step-by-step."><span class="ic">💰</span> Income Tax ₹12L</button>
+      <button class="s-chip" data-q="I provide IT services, turnover ₹25 lakhs. GST registration guide — step by step."><span class="ic">📊</span> GST Registration</button>
+      <button class="s-chip" data-q="How to file ITR-1 FY 2024-25? Documents needed, deadlines, penalties."><span class="ic">📝</span> File ITR-1</button>
+      <button class="s-chip" data-q="Best tax saving under 80C, 80D, NPS FY 2024-25 — complete list with limits."><span class="ic">💡</span> 80C Deductions</button>
+      <button class="s-chip" data-q="Capital gains — sold listed shares ₹5L bought at ₹2L held 2 years. Calculate LTCG tax."><span class="ic">📈</span> Capital Gains</button>
+      <button class="s-chip" data-q="TDS rates: sections 192, 194A, 194C, 194H, 194I, 194J — thresholds, rates, due dates."><span class="ic">📋</span> TDS Rate Chart</button>
+    </div>
+
+    <!-- Drafting -->
+    <div class="s-label" style="margin-top:4px">Legal Drafting</div>
+    <div class="s-chips">
+      <button class="s-chip" data-q="[DRAFTING MODE] Draft a formal reply to Income Tax Notice u/s 143(1) — TDS mismatch with Form 26AS."><span class="ic">⚖️</span> IT Notice 143(1)</button>
+      <button class="s-chip" data-q="[DRAFTING MODE] Draft reply to GST Notice ASMT-10 — excess ITC in GSTR-3B vs GSTR-2B."><span class="ic">⚖️</span> GST ASMT-10</button>
+      <button class="s-chip" data-q="[DRAFTING MODE] Draft Board Resolution for Pvt Ltd Co. to open current account with HDFC Bank."><span class="ic">📄</span> Board Resolution</button>
+    </div>
+
+    <!-- History -->
+    <div class="s-label" style="margin-top:4px">Recent Chats</div>
+    <div class="hist-list" id="historyList">
+      <span class="hist-empty">No consultations yet</span>
+    </div>
+
+    <div style="flex:1"></div>
+
+    <button class="clear-btn" id="clearBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      Clear Chat
+    </button>
+
+  </div>
+
+  <div class="sb-foot">
+    <div class="foot-txt">CA AI PY SOSA DHRUV v5.0 · FCA ICAI · AY 2025-26</div>
+    <div class="foot-txt">Made by <a href="https://nexoraai.tech" target="_blank">Nexora AI</a> · Dhruv Sosa</div>
+  </div>
+
+</aside>
+
+<!-- Mobile overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ── Main ──────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="ib mob" id="menuBtn" style="display:none" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <button class="ib" id="sidebarToggle" title="Toggle sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+    </button>
+    <div class="tb-brand">
+      <span class="tb-name">CA AI PY SOSA DHRUV</span>
+      <span class="tb-sub">AI Chartered Accountant · AY 2025-26</span>
+    </div>
+    <div class="tb-right">
+      <span class="badge-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        FCA · ICAI
+      </span>
+      <button class="ib" id="calcBtn" title="Financial Calculator" style="color:var(--g2);border-color:rgba(184,146,74,.2)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="12" y1="10" x2="14" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="12" y1="14" x2="14" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="12" y1="18" x2="14" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>
+      </button>
+      <button class="stop-btn" id="stopBtn" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="6" height="6"/><circle cx="12" cy="12" r="10"/></svg>
+        Stop
+      </button>
+    </div>
+  </header>
+
+  <!-- Chat window -->
+  <div class="chat-win" id="chatWin">
+
+    <!-- Welcome screen -->
+    <div class="welcome" id="welcome">
+      <div class="wlc-icon">CA</div>
+      <h1 class="wlc-heading">Namaste! <em>🙏</em></h1>
+      <p class="wlc-desc">I'm <strong>CA AI PY SOSA DHRUV</strong> — your AI Chartered Accountant</p>
+      <p class="wlc-sub">FCA · ICAI · 25+ years expertise<br/>Income Tax · GST · Audit · Company Law · Payroll</p>
+
+      <div class="feat-grid">
+        <div class="feat-card" data-q="Explain Income Tax FY 2024-25: Old vs New regime, 80C deductions, advance tax, capital gains." id="featCard0">
+          <span class="fi">💰</span>
+          <b>Income Tax</b>
+          <p>Regimes, deductions, capital gains</p>
+        </div>
+        <div class="feat-card" data-q="Complete GST guide: Registration, GSTR deadlines, ITC, RCM, composition scheme." id="featCard1">
+          <span class="fi">📊</span>
+          <b>GST Advisory</b>
+          <p>Registration, ITC, returns, RCM</p>
+        </div>
+        <div class="feat-card" id="featFileAudit">
+          <span class="fi">📁</span>
+          <b>File Audit</b>
+          <p>Upload PDF, Excel, Word for AI analysis</p>
+        </div>
+        <div class="feat-card" data-q="ROC compliance for Private Limited Company vs LLP — registration, forms, annual filings." id="featCard3">
+          <span class="fi">🏢</span>
+          <b>Company Law</b>
+          <p>Pvt Ltd, LLP, MCA, ROC filings</p>
+        </div>
+        <div class="feat-card" data-q="Payroll compliance: EPF, ESI, professional tax, salary structuring, gratuity." id="featCard4">
+          <span class="fi">👥</span>
+          <b>Payroll</b>
+          <p>EPF, ESI, salary structure, gratuity</p>
+        </div>
+        <div class="feat-card" id="featExport">
+          <span class="fi">📤</span>
+          <b>Export Report</b>
+          <p>Download CA report as PDF or Excel</p>
+        </div>
+      </div>
+
+      <p class="wlc-hint">Type below · 📎 Upload documents · 🧮 Use the calculator</p>
+
+      <!-- API key banner -->
+      <div class="setup-banner" id="apiSetupBanner" style="display:none">
+        <div class="si">🔑</div>
+        <div class="sb">
+          <h4>OpenRouter API Key Required</h4>
+          <p class="em" id="setupErrMsg">No AI model connected.</p>
+          <p>Get a free key at <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--g2)">openrouter.ai/keys</a></p>
+          <div class="setup-inrow" style="margin-top:8px">
+            <input class="s-field" id="apiKeyInput" type="password" placeholder="sk-or-v1-…" autocomplete="off"/>
+            <button class="s-save" id="saveApiKey">Save Key</button>
+          </div>
+          <div class="setup-note">🔒 Saved to local .env only — never shared.</div>
+        </div>
+      </div>
+
+      <!-- No engine notice -->
+      <div class="no-engine" id="ollamaNotice" style="display:none">
+        <h4>⚠️ No AI Engine Found</h4>
+        <p>Set an API key above, or run Ollama locally:</p>
+        <ol>
+          <li>Download from <a href="https://ollama.com/download" target="_blank">ollama.com/download</a></li>
+          <li>Run: <code>ollama serve</code></li>
+          <li>Pull a model: <code>ollama pull llama3.2</code></li>
+          <li><button onclick="location.reload()" style="background:none;border:none;color:var(--g1);cursor:pointer;text-decoration:underline;font-size:inherit">Refresh page</button></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="msgs" id="msgs"></div>
+
+  </div>
+
+  <!-- Input bar -->
+  <div class="inp-bar">
+
+    <!-- Horizontal chips -->
+    <div class="h-chips" id="chipsRow">
+      <button class="h-chip" data-q="Calculate income tax for ₹12L salary FY 2024-25. Old vs new regime.">💰 Tax ₹12L</button>
+      <button class="h-chip" data-q="GST registration guide — IT services ₹25L turnover.">📊 GST Guide</button>
+      <button class="h-chip" data-q="Best 80C, 80D deductions FY 2024-25 with limits.">💡 80C Savings</button>
+      <button class="h-chip" data-q="LTCG tax — listed shares ₹5L sold, bought at ₹2L, held 2 yrs.">📈 Capital Gains</button>
+      <button class="h-chip" data-q="TDS rates: 192, 194A, 194C, 194H, 194I, 194J — thresholds & dates.">📋 TDS Chart</button>
+      <button class="h-chip" data-q="How to register Private Limited Company — steps, cost, ROC compliance.">🏢 Pvt Ltd Reg</button>
+    </div>
+
+    <!-- File strip -->
+    <div class="file-strip" id="fileStrip" style="display:none">
+      <div class="file-name">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        <span id="fileChipName">document.pdf</span>
+      </div>
+      <div class="file-ok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Ready
+      </div>
+      <button class="file-rm" id="fileRemove" aria-label="Remove file">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Input row -->
+    <div class="inp-row">
+      <label class="attach-btn" for="fileInput" title="Attach document">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </label>
+      <input type="file" id="fileInput" accept=".pdf,.xlsx,.xls,.csv,.docx,.doc,.txt,.json" style="display:none"/>
+
+      <div class="inp-wrap">
+        <textarea class="inp-ta" id="inputBox" rows="1"
+          placeholder="Ask your CA question… e.g. 'Calculate tax for ₹12L salary'"
+          aria-label="Message input"></textarea>
+        <button class="send-btn" id="sendBtn" disabled title="Send (Enter)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="inp-foot">🔒 Powered by OpenRouter Cloud · PDF · Excel · Word · CSV supported</div>
+  </div>
+
+</div>
+
+<!-- Upload overlay -->
+<div class="upload-bg" id="uploadOverlay" style="display:none">
+  <div class="upload-box">
+    <div class="spin-ring"></div>
+    <p>Reading document…</p>
+    <small>Extracting content for analysis</small>
+  </div>
+</div>
+
+<!-- Calculator modal -->
+<div class="modal-bg" id="calcModal" style="display:none">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-ttl">🧮 Financial Toolkit</span>
+      <button class="modal-x" id="calcModalClose">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="c-tabs">
+      <button class="c-tab active" data-target="cp-tax">Income Tax</button>
+      <button class="c-tab" data-target="cp-gst">GST</button>
+      <button class="c-tab" data-target="cp-emi">Loan EMI</button>
+    </div>
+
+    <!-- Income Tax -->
+    <div class="c-pane active" id="cp-tax">
+      <div class="c-grp">
+        <label class="c-lbl">Annual Income (₹)</label>
+        <input class="c-inp" id="calcIncome" type="number" placeholder="e.g. 1200000" min="0"/>
+      </div>
+      <div class="c-grp">
+        <label class="c-lbl">Tax Regime</label>
+        <select class="c-sel" id="calcRegime">
+          <option value="new">New Regime (Default FY 2024-25)</option>
+          <option value="old">Old Regime</option>
+        </select>
+      </div>
+      <div class="c-grp" id="deductionGroup" style="display:none">
+        <label class="c-lbl">Total Deductions — 80C + 80D + others (₹)</label>
+        <input class="c-inp" id="calcDeductions" type="number" placeholder="e.g. 200000" min="0"/>
+      </div>
+    </div>
+
+    <!-- GST -->
+    <div class="c-pane" id="cp-gst" style="display:none">
+      <div class="c-grp">
+        <label class="c-lbl">Amount (₹)</label>
+        <input class="c-inp" id="calcGstAmount" type="number" placeholder="e.g. 100000" min="0"/>
+      </div>
+      <div class="c-grp">
+        <label class="c-lbl">GST Rate</label>
+        <select class="c-sel" id="calcGstRate">
+          <option value="18">18%</option>
+          <option value="12">12%</option>
+          <option value="5">5%</option>
+          <option value="28">28%</option>
+          <option value="0">0% (Exempt)</option>
+        </select>
+      </div>
+      <div class="c-grp">
+        <label class="c-lbl">Calculation Type</label>
+        <select class="c-sel" id="calcGstType">
+          <option value="exclusive">Exclusive — Add GST to amount</option>
+          <option value="inclusive">Inclusive — Extract GST from amount</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- EMI -->
+    <div class="c-pane" id="cp-emi" style="display:none">
+      <div class="c-grp">
+        <label class="c-lbl">Loan Amount (₹)</label>
+        <input class="c-inp" id="calcEmiAmount" type="number" placeholder="e.g. 5000000" min="0"/>
+      </div>
+      <div class="c-grp">
+        <label class="c-lbl">Interest Rate (% p.a.)</label>
+        <input class="c-inp" id="calcEmiRate" type="number" placeholder="e.g. 8.5" min="0" step="0.1"/>
+      </div>
+      <div class="c-grp">
+        <label class="c-lbl">Tenure (Years)</label>
+        <input class="c-inp" id="calcEmiYears" type="number" placeholder="e.g. 20" min="1"/>
+      </div>
+    </div>
+
+    <button class="c-calc-btn" id="calcSubmit">Calculate</button>
+
+    <div class="c-result" id="calcResult" style="display:none">
+      <h4>Result Breakdown</h4>
+      <div id="calcRows"></div>
+    </div>
+
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--b1)">
+      <button class="c-send-btn" id="calcSendChat">📤 Send to Chat for AI Analysis</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
