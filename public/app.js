@@ -524,7 +524,7 @@ function addBubble(role, text, isErr = false) {
 
   const meta = document.createElement('div');
   meta.className = 'msg-meta';
-  meta.innerHTML = `<span class="msg-name">${isUser ? 'You' : 'CA AI PY SOSA DHRUV (FCA)'}</span><span class="msg-time">${now()}</span>`;
+  meta.innerHTML = `<span class="msg-name">${isUser ? 'You' : 'CABot (FCA)'}</span><span class="msg-time">${now()}</span>`;
 
   const bub = document.createElement('div');
   bub.className = `bubble${isErr ? ' err' : ''}`;
@@ -574,7 +574,7 @@ function addTyping() {
   wrap.innerHTML = `
     <div class="av ai">CA</div>
     <div class="msg-body">
-      <div class="msg-meta"><span class="msg-name">CA AI PY SOSA DHRUV (FCA)</span><span class="msg-time">${now()}</span></div>
+      <div class="msg-meta"><span class="msg-name">CABot (FCA)</span><span class="msg-time">${now()}</span></div>
       <div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>
     </div>`;
   EL.msgs.appendChild(wrap);
@@ -594,13 +594,13 @@ async function exportReport(type) {
   try {
     const res = await fetch(type === 'pdf' ? '/api/export/pdf' : '/api/export/excel', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: APP.messages, clientName: EL.clientName.value.trim(), title: 'CA AI PY SOSA DHRUV CA Report' }),
+      body: JSON.stringify({ messages: APP.messages, clientName: EL.clientName.value.trim(), title: 'CABot CA Report' }),
     });
     if (!res.ok) { const d = await res.json().catch(() => ({})); showToast('❌ ' + (d.error || res.status), 4000); return; }
     const blob = await res.blob();
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
-    a.href = url; a.download = `CA_AI_PY_SOSA_DHRUV_Report_${Date.now()}.${type === 'pdf' ? 'pdf' : 'xlsx'}`;
+    a.href = url; a.download = `CABot_Report_${Date.now()}.${type === 'pdf' ? 'pdf' : 'xlsx'}`;
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
     showToast(`✅ ${type.toUpperCase()} downloaded!`, 3000);
@@ -644,7 +644,7 @@ function showToast(msg, dur = 3000) {
 // ══════════════════════════════════════════════════════════════
 // HISTORY
 // ══════════════════════════════════════════════════════════════
-const HKEY = 'ca_ai_py_sosa_dhruv_hist';
+const HKEY = 'cabot_v40_hist';
 
 function saveHistory(preview) {
   const list = getHistory();

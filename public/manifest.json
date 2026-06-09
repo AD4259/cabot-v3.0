@@ -1,6 +1,6 @@
 {
-  "name": "CA AI PY SOSA DHRUV — AI Chartered Accountant",
-  "short_name": "CA AI PY SOSA DHRUV",
+  "name": "CABot — AI Chartered Accountant",
+  "short_name": "CABot",
   "description": "AI Chartered Accountant for India. Expert in Income Tax, GST, Audit, and Company Law.",
   "start_url": "/",
   "display": "standalone",
